@@ -2,6 +2,8 @@ package com.springboot.springbootwithcrud.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,12 +19,15 @@ import com.springboot.springbootwithcrud.service.ProductService;
 @RequestMapping(value = "/product")
 public class ProductController {
 	
+	public Logger logger = LoggerFactory.getLogger(ProductController.class);
+	
 	@Autowired
 	ProductService productService;
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public Product saveProduct(@RequestBody Product product)
 	{
+		logger.info("Start execution saveProduct method...");
 		return productService.saveProduct(product);
 		
 	}
@@ -63,6 +68,19 @@ public class ProductController {
 	public List<Product> getProductsByPrice(@RequestParam("priceStart") Double priceStart, @RequestParam("priceEnd") Double priceEnd)
 	{
 		return productService.getProductsByPrice(priceStart, priceEnd);
+	}
+	
+	@RequestMapping(value = "/getProductsByManufacturerAndPrice", method = RequestMethod.GET)
+	public List<Product> getProductsByManufacturerAndPrice(@RequestParam("manufacturer") String manufacturer,
+			@RequestParam("priceStart") Double priceStart, @RequestParam("priceEnd") Double priceEnd)
+	{
+		return productService.getProductsByManufacturerAndPrice(manufacturer, priceStart, priceEnd);
+	}
+	
+	@RequestMapping(value = "/fetch", method = RequestMethod.GET)
+	public List<Product> getAllProductsUsingPagination(@RequestParam("pageNo") Integer pageNo, @RequestParam("recordsInEachPage") Integer recordsInEachPage)
+	{
+		return productService.getAllProductsUsingPagination(pageNo, recordsInEachPage);
 	}
 }
 

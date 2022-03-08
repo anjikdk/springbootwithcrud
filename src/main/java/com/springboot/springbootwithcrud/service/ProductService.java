@@ -19,5 +19,9 @@ public interface ProductService {
 	public List<Product> getProductsByManufacturer(String manufacturer);
 	
 	public List<Product> getProductsByPrice(Double startingPrice, Double endingPrice);
+	
+	public List<Product> getProductsByManufacturerAndPrice(String manufacturer, Double startingPrice, Double endingPrice);
+	
+	public List<Product> getAllProductsUsingPagination(Integer pageNo, Integer recordsInEachPage);
 }
 
