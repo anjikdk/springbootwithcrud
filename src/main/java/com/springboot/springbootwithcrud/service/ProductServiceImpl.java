@@ -5,6 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,7 @@ public class ProductServiceImpl implements ProductService
 	@Autowired
 	ProductRepository productRepository;
 	
+	@CacheEvict(value = "ProductsByManufacturerAndPrice", allEntries = true)
 	public Product saveProduct(Product p)
 	{
 		return productRepository.save(p);
@@ -31,11 +34,13 @@ public class ProductServiceImpl implements ProductService
 		return (List<Product>)productRepository.findAll();
 	}
 	
+	@CacheEvict(value = "ProductsByManufacturerAndPrice", allEntries = true)
 	public Product updateProduct(Product p)
 	{
 		return productRepository.save(p);
 	}
 	
+	@CacheEvict(value = "ProductsByManufacturerAndPrice", allEntries = true)
 	public Product deleteProduct(Product p)
 	{
 		productRepository.delete(p);
@@ -43,6 +48,7 @@ public class ProductServiceImpl implements ProductService
 		return p;
 	}
 	
+	@CacheEvict(value = "ProductsByManufacturerAndPrice", allEntries = true)
 	public boolean deleteProductById(Integer id)
 	{
 		productRepository.deleteById(id);
@@ -60,6 +66,7 @@ public class ProductServiceImpl implements ProductService
 		return productRepository.findByPriceBetween(startingPrice, endingPrice);
 	}
 	
+	@Cacheable(value = "ProductsByManufacturerAndPrice")
 	public List<Product> getProductsByManufacturerAndPrice(String manufacturer, Double startingPrice, Double endingPrice)
 	{
 		log.info("manufacturer: "+manufacturer);

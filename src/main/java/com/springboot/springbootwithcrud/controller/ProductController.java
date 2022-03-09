@@ -5,6 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -71,10 +73,12 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value = "/getProductsByManufacturerAndPrice", method = RequestMethod.GET)
-	public List<Product> getProductsByManufacturerAndPrice(@RequestParam("manufacturer") String manufacturer,
+	public ResponseEntity<List<Product>> getProductsByManufacturerAndPrice(@RequestParam("manufacturer") String manufacturer,
 			@RequestParam("priceStart") Double priceStart, @RequestParam("priceEnd") Double priceEnd)
 	{
-		return productService.getProductsByManufacturerAndPrice(manufacturer, priceStart, priceEnd);
+		List<Product> productList = productService.getProductsByManufacturerAndPrice(manufacturer, priceStart, priceEnd);
+		
+		return new ResponseEntity<List<Product>>(productList, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/fetch", method = RequestMethod.GET)
