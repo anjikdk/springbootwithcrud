@@ -31,7 +31,6 @@ public class ProductController {
 	{
 		logger.info("Start execution saveProduct method...");
 		return productService.saveProduct(product);
-		
 	}
 	
 	// http://localhost:8080/product/save
